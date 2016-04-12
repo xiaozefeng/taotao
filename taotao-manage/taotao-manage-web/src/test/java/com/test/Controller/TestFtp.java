@@ -46,8 +46,8 @@ public class TestFtp {
 	 * <p>Title: ftpConfigTest</p>
 	 * <p>Description: </p>
 	 */
-	@Test
+	/*@Test
 	public void ftpConfigTest(){
 		new FtpConfig();
-	}
+	}*/
 }

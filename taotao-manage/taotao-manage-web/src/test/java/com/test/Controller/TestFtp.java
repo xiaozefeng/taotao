@@ -7,9 +7,11 @@ import java.net.SocketException;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPClientConfig;
 import org.junit.Test;
 
 import com.taotao.common.utils.FtpUtil;
+import com.taotao.config.FtpConfig;
 
 public class TestFtp {
 /*	@Test
@@ -38,4 +40,14 @@ public class TestFtp {
 		FileInputStream fis = new FileInputStream(new File("g:/图片/aaa.jpg"));
 		FtpUtil.uploadFile("192.168.68.132", 21, "ftpuser", "ftpuser", "/home/ftpuser/www/images", "2016/04/04", "hello2.jpg", fis);
 	}*/
+	
+	/**
+	 * 测试读取ftp配置文件
+	 * <p>Title: ftpConfigTest</p>
+	 * <p>Description: </p>
+	 */
+	@Test
+	public void ftpConfigTest(){
+		new FtpConfig();
+	}
 }

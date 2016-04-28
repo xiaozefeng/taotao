@@ -1,5 +1,6 @@
 package com.taotao.mapper;
 
+import com.taotao.dto.ItemParamDto;
 import com.taotao.pojo.TbItemParam;
 import com.taotao.pojo.TbItemParamExample;
 import java.util.List;
@@ -33,4 +34,6 @@ public interface TbItemParamMapper {
     int updateByPrimaryKeyWithBLOBs(TbItemParam record);
 
     int updateByPrimaryKey(TbItemParam record);
+
+	List<ItemParamDto> getItemParamList();
 }

@@ -18,11 +18,13 @@ public class ItemParamController {
 	private ItemParamService itemParamService;
 	
 	@RequestMapping("/query/itemcatid/{itemCatId}")
+	@ResponseBody
 	public TaotaoResult getItemParamByCid(@PathVariable Long itemCatId){
 		return itemParamService.getItemParamByCid(itemCatId);
 	}
 	
 	@RequestMapping("/save/{cid}")
+	@ResponseBody
 	public TaotaoResult saveItemParam(@PathVariable Long cid ,String paramData){
 		TbItemParam itemParam = new TbItemParam();
 		itemParam.setItemCatId(cid);

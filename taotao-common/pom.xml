@@ -6,7 +6,6 @@
 		<artifactId>taotao-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	
 	<groupId>com.taotao</groupId>
 	<artifactId>taotao-common</artifactId>
 	<version>0.0.1-SNAPSHOT</version>

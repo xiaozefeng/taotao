@@ -17,4 +17,7 @@ public interface ItemService {
 	 * @return
 	 */
 	EUDataGridResult getItemList(int page,int rows);
+	
+	
+	
 }

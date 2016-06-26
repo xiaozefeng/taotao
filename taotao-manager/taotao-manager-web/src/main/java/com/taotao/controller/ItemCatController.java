@@ -22,4 +22,6 @@ public class ItemCatController {
 	public List<EUTreeNode> getItemCatList(@RequestParam(value="id",defaultValue="0") long parentId){
 		return itemCatService.getCatList(parentId);
 	}
+	
+	
 }

@@ -1,6 +1,7 @@
 package com.taotao.service;
 
 import com.taotao.common.pojo.EUDataGridResult;
+import com.taotao.common.pojo.TaotaoResult;
 import com.taotao.pojo.TbItem;
 
 public interface ItemService {
@@ -17,6 +18,12 @@ public interface ItemService {
 	 * @return
 	 */
 	EUDataGridResult getItemList(int page,int rows);
+	/***
+	 * 保存商品信息和商品描述
+	 * @param item
+	 * @return
+	 */
+	TaotaoResult saveItem(TbItem item,String desc)throws Exception;
 	
 	
 	

@@ -22,7 +22,7 @@ public class PictureUploadController {
 	@Autowired
 	private PictureUploadService pictureUploadService;
 	
-	@RequestMapping("/pic/upload")
+	@RequestMapping("/pic/upload") 
 	@ResponseBody
 	public String uploadFile(MultipartFile uploadFile){
 		Map result = pictureUploadService.uploadFile(uploadFile);

@@ -1,9 +1,12 @@
 package com.taotao.mapper;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.taotao.dto.ItemParamDto;
 import com.taotao.pojo.TbItemParam;
 import com.taotao.pojo.TbItemParamExample;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
 public interface TbItemParamMapper {
     int countByExample(TbItemParamExample example);
@@ -33,4 +36,9 @@ public interface TbItemParamMapper {
     int updateByPrimaryKeyWithBLOBs(TbItemParam record);
 
     int updateByPrimaryKey(TbItemParam record);
+    
+    /**
+     * 查询规格参数列表
+     */
+    List<ItemParamDto> getItemParamForPage();
 }

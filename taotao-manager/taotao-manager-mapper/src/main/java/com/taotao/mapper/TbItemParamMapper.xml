@@ -248,4 +248,18 @@
       updated = #{updated,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  
+  <select id = "getItemParamForPage" resultType="com.taotao.dto.ItemParamDto">
+	  	SELECT 
+	    tc.`id` id,
+	    tc.`created` created,
+	    tc.`updated` updated,
+	    tc.id itemCatId,
+	    tc.`name` itemCatName,
+	    tp.`param_data` paramData
+	FROM
+	    `tb_item_param` tp
+	        LEFT JOIN
+	    `tb_item_cat` tc ON tp.`item_cat_id` = tc.`id`	
+  </select>
 </mapper>

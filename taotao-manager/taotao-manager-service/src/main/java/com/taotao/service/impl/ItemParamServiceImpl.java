@@ -1,5 +1,6 @@
 package com.taotao.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.taotao.common.pojo.EUDataGridResult;
 import com.taotao.common.pojo.TaotaoResult;
+import com.taotao.common.utils.IDUtils;
 import com.taotao.dto.ItemParamDto;
 import com.taotao.mapper.TbItemParamMapper;
 import com.taotao.pojo.TbItemParam;
@@ -22,12 +24,12 @@ public class ItemParamServiceImpl implements ItemParamService {
 	@Autowired
 	private TbItemParamMapper tbItemParamMapper; 
 	
-	@Override
+	 @Override
 	public TaotaoResult getItemParamByCid(long cid) {
 		TbItemParamExample example = new TbItemParamExample();
 		Criteria criteria = example.createCriteria();
 		criteria.andItemCatIdEqualTo(cid);
-		List<TbItemParam> list = tbItemParamMapper.selectByExample(example);
+		List<TbItemParam> list = tbItemParamMapper.selectByExampleWithBLOBs(example);
 		if(list != null && list.size()>0 ){
 			return TaotaoResult.ok(list.get(0));
 			
@@ -47,6 +49,18 @@ public class ItemParamServiceImpl implements ItemParamService {
 		PageInfo<ItemParamDto> pageInfo = new PageInfo<>(list);
 		result.setTotal(pageInfo.getTotal());
 		return result;
+	}
+
+	@Override
+	public TaotaoResult saveItemParam(Long cid, String paramData) {
+		TbItemParam param = new TbItemParam();
+		param.setItemCatId(cid);
+		param.setParamData(paramData);
+		param.setCreated(new Date());
+		param.setUpdated(new Date());
+		
+		tbItemParamMapper.insert(param);
+		return TaotaoResult.ok();
 	}
 
 }

@@ -16,6 +16,7 @@ public class ItemParamDto implements Serializable {
 	private Date created;
 	private Date updated;
 	private Long itemCatId;
+	
 	public String getItemCatName() {
 		return itemCatName;
 	}
@@ -28,7 +29,6 @@ public class ItemParamDto implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
 	public String getParamData() {
 		return paramData;
 	}
@@ -53,5 +53,6 @@ public class ItemParamDto implements Serializable {
 	public void setItemCatId(Long itemCatId) {
 		this.itemCatId = itemCatId;
 	}
+	
 	
 }

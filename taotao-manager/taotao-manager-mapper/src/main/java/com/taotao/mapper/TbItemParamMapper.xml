@@ -251,9 +251,9 @@
   
   <select id = "getItemParamForPage" resultType="com.taotao.dto.ItemParamDto">
 	  	SELECT 
-	    tc.`id` id,
-	    tc.`created` created,
-	    tc.`updated` updated,
+	    tp.`id` id,
+	    tp.`created` created,
+	    tp.`updated` updated,
 	    tc.id itemCatId,
 	    tc.`name` itemCatName,
 	    tp.`param_data` paramData

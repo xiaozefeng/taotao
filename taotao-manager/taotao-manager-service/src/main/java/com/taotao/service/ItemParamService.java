@@ -15,4 +15,11 @@ public interface ItemParamService {
 	 * @return
 	 */
 	EUDataGridResult getItemParamForPage(int page,int rows);
+	/**
+	 * 保存规格参数模板
+	 * @param cid
+	 * @param paramData
+	 * @return
+	 */
+	TaotaoResult saveItemParam(Long cid, String paramData);
 }

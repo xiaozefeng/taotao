@@ -23,7 +23,7 @@ public interface ItemService {
 	 * @param item
 	 * @return
 	 */
-	TaotaoResult saveItem(TbItem item,String desc)throws Exception;
+	TaotaoResult saveItem(TbItem item,String desc,String itemParams)throws Exception;
 	
 	
 	

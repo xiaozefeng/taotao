@@ -26,7 +26,7 @@ public class ItemCatServiceImpl implements ItemCatService {
 	}
 	/**
 	 * 获取商品分类列表
-	 * @param i
+	 * @param parentId
 	 * @return
 	 */
 	private List<?> getCatList(long parentId) {

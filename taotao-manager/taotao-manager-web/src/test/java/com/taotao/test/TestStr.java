@@ -10,5 +10,9 @@ public class TestStr {
 		String oldName = "abc.jpg";
 		String newName = IDUtils.genImageName()+oldName.substring(oldName.indexOf("."));
 		System.out.println(newName);
+
 	}
+	
+	
+	
 }

@@ -3,13 +3,17 @@ package com.taotao.rest.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.taotao.common.constant.RedisConstant;
+import com.taotao.common.utils.JsonUtils;
 import com.taotao.mapper.TbItemCatMapper;
 import com.taotao.pojo.TbItemCat;
 import com.taotao.pojo.TbItemCatExample;
 import com.taotao.pojo.TbItemCatExample.Criteria;
+import com.taotao.rest.dao.JedisClient;
 import com.taotao.rest.pojo.CatNode;
 import com.taotao.rest.pojo.CatResult;
 import com.taotao.rest.service.ItemCatService;
@@ -18,10 +22,29 @@ public class ItemCatServiceImpl implements ItemCatService {
 
 	@Autowired
 	private TbItemCatMapper tbItemCatMapper;
+	@Autowired
+	private JedisClient jedisClient;
+	
 	@Override
 	public CatResult getItemCatList() {
 		CatResult result = new CatResult();
-		result.setData(getCatList(0));
+		String string = jedisClient.hget(RedisConstant.INDEX_CATEGORY_REDIS_KEY, "0");
+		if(StringUtils.isNotBlank(string)){
+			List<Object> list = JsonUtils.jsonToList(string, Object.class);
+			result.setData(list);
+			return result;
+		}
+		
+		List<?> catList = getCatList(0);
+		result.setData(catList);
+		
+		try {
+			String json = JsonUtils.objectToJson(catList);
+			jedisClient.hset(RedisConstant.INDEX_CATEGORY_REDIS_KEY, "0", json);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		return result;
 	}
 	/**
@@ -61,6 +84,8 @@ public class ItemCatServiceImpl implements ItemCatService {
 				resultList.add("/products/"+itemCat.getId()+".html|" + itemCat.getName());
 			}
 		}
+		
+		
 		return resultList;
 	}
 

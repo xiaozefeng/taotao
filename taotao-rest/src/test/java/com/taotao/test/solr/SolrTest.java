@@ -1,9 +1,10 @@
 package com.taotao.test.solr;
 
-import java.io.IOException;
-
-import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
 import org.junit.Test;
 
@@ -32,4 +33,27 @@ public class SolrTest {
 		solr.deleteByQuery("*:*");
 		solr.commit();
 	}
+	
+	@Test
+	public void queryDocument() throws Exception{
+		//创建连接
+		HttpSolrServer solr = new HttpSolrServer("http://192.168.56.101:8080/solr");
+		//创建查询对象
+		SolrQuery query = new SolrQuery();
+		query.setQuery("*:*");
+		query.setStart(20);
+		query.setRows(50);
+		
+		QueryResponse response = solr.query(query);
+		SolrDocumentList list = response.getResults();
+		for (SolrDocument document : list) {
+			System.out.println(document.get("id"));
+			System.out.println(document.get("item_title"));
+			System.out.println(document.get("item_image"));
+			System.out.println(document.get("item_price"));
+		}
+		
+		
+	}
+	
 }

@@ -81,6 +81,8 @@ public class TestJedis {
 	//	jedis.hset("baidu.cap.plugin.ouath.api:accessthoke", "xiao","hahaha");
 	//	jedis.expire("com.cap.plugin.ouath.api:accessthoke:12345678", 20);
 		//jedis.del("baidu.cap.plugin.ouath.api:accessthoke");
+		Long ttl = jedis.ttl("a");
+		System.out.println(ttl);
 		jedis.close();
 		pool.close();
 	}

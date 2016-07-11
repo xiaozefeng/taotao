@@ -1,9 +1,13 @@
 package com.taotao.sso.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +28,25 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	/***
+	 * 打开注册页面
+	 * @return
+	 */
+	@RequestMapping("/showRegister")
+	public String showRegister(){
+		return "register";
+	}
+	
+	/**
+	 *跳转登录页面 
+	 * @return
+	 */
+	@RequestMapping("/showLogin")
+	public String showLogin(String redirect ,Model model){
+		model.addAttribute("redirect", redirect);
+		return "login";
+	}
+	
 	/**
 	 * 用户参数信息检查接口
 	 * @param param
@@ -80,10 +103,16 @@ public class UserController {
 		}
 	}
 	
-	
+	/***
+	 * 用户登录接口
+	 * @param username
+	 * @param password
+	 * @return
+	 */
 	@RequestMapping(value="/login",method=RequestMethod.POST)
 	@ResponseBody
-	public TaotaoResult userLogin(String username,String password){
+	public TaotaoResult userLogin(String username,String password,HttpServletRequest request,
+			HttpServletResponse response){
 		if(StringUtils.isBlank(username)){
 			return TaotaoResult.build(400, "用户名不能为空");
 		}
@@ -91,14 +120,19 @@ public class UserController {
 			return TaotaoResult.build(400, "密码不能为空");
 		}
 		try {
-			return userService.userLogin(username,password);
+			return userService.userLogin(username,password,request,response);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return TaotaoResult.build(500, ExceptionUtil.getStackTrace(e));
 		}
 	}
 	
-	
+	/***
+	 * 根据token查询用户信息
+	 * @param token
+	 * @param callback
+	 * @return
+	 */
 	@RequestMapping(value="/token/{token}")
 	@ResponseBody
 	public Object getUserInfoByToken(@PathVariable String token,String callback){
@@ -107,12 +141,30 @@ public class UserController {
 			taotaoResult = userService.getUserInfoByToken(token);
 		} catch (Exception e) {
 			e.printStackTrace();
-			taotaoResult = taotaoResult.build(500, ExceptionUtil.getStackTrace(e));
+			taotaoResult = TaotaoResult.build(500, ExceptionUtil.getStackTrace(e));
 		}
 		if(callback != null){
 			MappingJacksonValue view = new MappingJacksonValue(taotaoResult);
 			view.setJsonpFunction(callback);
 			return view;
+		}
+		return taotaoResult;
+	}
+	
+	@RequestMapping(value="/logout/{token}",method=RequestMethod.GET)
+	@ResponseBody
+	public Object logout(@PathVariable String token,String callback){
+		TaotaoResult taotaoResult = null;
+		try {
+			taotaoResult = userService.userLogout(token);
+		} catch (Exception e) {
+			e.printStackTrace();
+			taotaoResult = TaotaoResult.build(500, ExceptionUtil.getStackTrace(e));
+		}
+		if(callback != null){
+			MappingJacksonValue value = new MappingJacksonValue(taotaoResult);
+			value.setJsonpFunction(callback);
+			return value;
 		}
 		return taotaoResult;
 	}

@@ -30,6 +30,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 					+ request.getRequestURL());
 			return false;
 		}
+		request.setAttribute("user", user);
 		// 是 跳转到对应地址
 		return true;
 	}

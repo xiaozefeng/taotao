@@ -1,11 +1,15 @@
 package com.taotao.test.jedis;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.taotao.common.utils.JsonUtils;
+import com.taotao.rest.pojo.SysOauthToken;
 
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.Jedis;
@@ -17,10 +21,11 @@ public class TestJedis {
 	@Test
 	public void testJedis1(){
 		//创建jedis对象
-		Jedis jedis = new Jedis("192.168.56.101",6379);
+//		Jedis jedis = new Jedis("192.168.101.185",6379);
+		Jedis jedis = new Jedis("192.168.143.133",6379);
 		//设置
-		jedis.set("key1", "hehe");
-		String string = jedis.get("key1");
+//		jedis.set("key1", "hehe");
+		String string = jedis.get("abc");
 		System.out.println(string);
 		//关闭jedis对象
 		jedis.close();
@@ -33,12 +38,16 @@ public class TestJedis {
 	@Test
 	public void testJedisPool(){
 		//创建jedis连接池
-		JedisPool pool = new JedisPool("192.168.56.101", 6379);
+		JedisPool pool = new JedisPool("192.168.101.183", 6379);
 		//获取jedis对象
 		Jedis jedis = pool.getResource();
 		//jedis.set("a", "10");
-		String str = jedis.get("key1");
+		String string = "test:api:accesstoken:486f95703dab481976a9b7d1a8dcc42d";
+		String str = jedis.get(string);
+		System.out.println(jedis.ttl(string));
+		jedis.del(string);
 		System.out.println(str);
+		
 		jedis.close();
 		pool.close();
 		
@@ -52,16 +61,16 @@ public class TestJedis {
 	@Test
 	public void testRedisCluster(){
 		Set<HostAndPort> nodes = new HashSet<>();
-		nodes.add(new HostAndPort("192.168.56.101", 7001));
-		nodes.add(new HostAndPort("192.168.56.101", 7002));
-		nodes.add(new HostAndPort("192.168.56.101", 7003));
-		nodes.add(new HostAndPort("192.168.56.101", 7004));
-		nodes.add(new HostAndPort("192.168.56.101", 7005));
-		nodes.add(new HostAndPort("192.168.56.101", 7006));
+		nodes.add(new HostAndPort("192.168.143.133", 7001));
+		nodes.add(new HostAndPort("192.168.143.133", 7002));
+		nodes.add(new HostAndPort("192.168.143.133", 7003));
+		nodes.add(new HostAndPort("192.168.143.133", 7004));
+		nodes.add(new HostAndPort("192.168.143.133", 7005));
+		nodes.add(new HostAndPort("192.168.143.133", 7006));
 		
 		JedisCluster cluster = new JedisCluster(nodes );
 		cluster.set("abc", "10000");
-		String string = cluster.get("a");
+		String string = cluster.get("abc");
 		System.out.println(string);
 		cluster.close();
 	}
@@ -81,8 +90,26 @@ public class TestJedis {
 	//	jedis.hset("baidu.cap.plugin.ouath.api:accessthoke", "xiao","hahaha");
 	//	jedis.expire("com.cap.plugin.ouath.api:accessthoke:12345678", 20);
 		//jedis.del("baidu.cap.plugin.ouath.api:accessthoke");
-		Long ttl = jedis.ttl("a");
-		System.out.println(ttl);
+		SysOauthToken token = new SysOauthToken();
+		token.setAccessToken("486f95703dab481976a9b7d1a8dcc42d");
+		token.setClientId("1000");
+		token.setCreateDate(new Date());
+		token.setUpdateDate(new Date());
+		token.setDeptId(1000L);
+		token.setDisabled(false);
+		token.setDomainId(100);
+		token.setPlatformToken("486f95703dab481976a9b7d1a8dcc42d");
+		token.setRefreshToken("486f95703dab481976a9b7d1a8dcc42d");
+		token.setUid("131123");
+		token.setExpiresIn(new Date());
+		String redisKey = "test:redis:size:access_token";
+		String json = JsonUtils.objectToJson(token);
+		for (int i = 0; i < 400000; i++) {
+			//jedis.set(redisKey+i, json);
+			//jedis.expire(redisKey+i, 100000);
+			jedis.del(redisKey+i);
+		}
+		
 		jedis.close();
 		pool.close();
 	}

@@ -1,4 +1,4 @@
-package com.taotao.test;
+ package com.taotao.test;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,13 +17,13 @@ public class TestFtp {
 		//创建ftp对象
 		FTPClient ftp = new FTPClient();
 		//建立连接，登录
-		ftp.connect("192.168.56.101",21);
+		ftp.connect("192.168.143.129",21);
 		ftp.login("ftpuser", "ftpuser");
 		//上传文件
 		//创建文件流
 		InputStream inputStream = new FileInputStream(new File("/Users/xiaozefeng/zfxiao/picture/hello.jpg"));
 		//设置上传文件的路径
-		boolean change = ftp.changeWorkingDirectory("/data0/zfxiao/www/images");
+		boolean change = ftp.changeWorkingDirectory("/datas/www/images");
 		System.out.println(change);
 		ftp.setFileType(FTP.BINARY_FILE_TYPE);
 		boolean storeFile = ftp.storeFile("hello1.jpg", inputStream);

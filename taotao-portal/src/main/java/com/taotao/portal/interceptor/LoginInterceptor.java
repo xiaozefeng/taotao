@@ -3,6 +3,8 @@ package com.taotao.portal.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,6 +18,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 	@Autowired
 	private UserServiceImpl userServiceImpl;
 
+	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
@@ -26,7 +29,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 		// 判断用户是否登录
 		if (null == user) {
 			// 否 跳转到登录页面
-			response.sendRedirect(userServiceImpl.SSO_BASE_URL + userServiceImpl.USER_SHOWLOGIN + "?redirect="
+			response.sendRedirect(userServiceImpl.SSO_URL + userServiceImpl.USER_SHOWLOGIN + "?redirect="
 					+ request.getRequestURL());
 			return false;
 		}

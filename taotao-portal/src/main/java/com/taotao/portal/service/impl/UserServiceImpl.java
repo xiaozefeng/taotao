@@ -14,6 +14,9 @@ public class UserServiceImpl implements UserService{
 	@Value("${SSO_BASE_URL}")
 	public String SSO_BASE_URL;
 	
+	@Value("${SSO_URL}")
+	public String SSO_URL;
+	
 	@Value("${SSO_TOKEN_URL}")
 	private String SSO_TOKEN_URL;
 	

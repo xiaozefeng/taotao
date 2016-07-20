@@ -16,5 +16,11 @@ public interface OrderService {
 	 * @return
 	 */
 	TaotaoResult createOrder(Order order, List<TbOrderItem> orderItems, TbOrderShipping orderShipping);
+	/**
+	 * 根据订单单号查询订单详情
+	 * @param orderId
+	 * @return
+	 */
+	TaotaoResult getOrderByOrderId(String orderId);
 	
 }

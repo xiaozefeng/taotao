@@ -1,5 +1,6 @@
 package com.taotao.order.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,8 +15,12 @@ import com.taotao.mapper.TbOrderShippingMapper;
 import com.taotao.order.dao.JedisClient;
 import com.taotao.order.pojo.Order;
 import com.taotao.order.service.OrderService;
+import com.taotao.pojo.TbOrder;
 import com.taotao.pojo.TbOrderItem;
+import com.taotao.pojo.TbOrderItemExample;
+import com.taotao.pojo.TbOrderItemExample.Criteria;
 import com.taotao.pojo.TbOrderShipping;
+import com.taotao.pojo.TbOrderShippingExample;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -74,6 +79,62 @@ public class OrderServiceImpl implements OrderService {
 		tbOrderShippingMapper.insert(orderShipping);
 		
 		return TaotaoResult.ok(orderId);
+	}
+
+
+	@Override
+	public TaotaoResult getOrderByOrderId(String orderId) {
+		Order result = new Order();
+		//查询订单信息
+		TbOrder tbOrder = tbOrderMapper.selectByPrimaryKey(orderId);
+		result.setOrderId(tbOrder.getOrderId());
+		result.setPayment(tbOrder.getPayment());
+		result.setPaymentType(tbOrder.getPaymentType());
+		result.setPostFee(tbOrder.getPostFee());
+		result.setStatus(tbOrder.getStatus());
+		result.setUserId(tbOrder.getUserId());
+		result.setCreateTime(tbOrder.getCreateTime());
+		result.setBuyerMessage(tbOrder.getBuyerMessage());
+		result.setBuyerNick(tbOrder.getBuyerNick());
+		
+		//查询订单详情
+		TbOrderItemExample example1 =new TbOrderItemExample();
+		List<TbOrderItem> orderItemList = selectOrderItemByOrderId(orderId, example1);
+		result.setOrderItems(orderItemList);
+		//查询收货信息
+		List<TbOrderShipping> orderShipiingList = selectOrderShipping(orderId);
+	    if(orderShipiingList.size() >0){
+	    	result.setOrderShipping(orderShipiingList.get(0));
+	    }
+	    
+		return TaotaoResult.ok(result);
+	}
+
+	/**
+	 * 根据订单编号查询商品详情信息
+	 * @param orderId
+	 * @param example1
+	 * @return
+	 */
+	private List<TbOrderItem> selectOrderItemByOrderId(String orderId, TbOrderItemExample example1) {
+		Criteria criteria = example1.createCriteria();
+		 criteria.andOrderIdEqualTo(orderId);
+		 List<TbOrderItem> orderItemList = new ArrayList<>();
+	     orderItemList = tbOrderItemMapper.selectByExample(example1);
+		return orderItemList;
+	}
+
+	/***
+	 * 根据订单编号查询收货信息
+	 * @param orderId
+	 * @return
+	 */
+	private List<TbOrderShipping> selectOrderShipping(String orderId) {
+		TbOrderShippingExample example2 = new TbOrderShippingExample();
+		com.taotao.pojo.TbOrderShippingExample.Criteria criteria2 = example2.createCriteria();
+		criteria2.andOrderIdEqualTo(orderId);
+		List<TbOrderShipping>  orderShipiingList = tbOrderShippingMapper.selectByExample(example2);
+		return orderShipiingList;
 	}
 
 }

@@ -137,4 +137,19 @@ public class OrderServiceImpl implements OrderService {
 		return orderShipiingList;
 	}
 
+
+	@Override
+	public TaotaoResult changeOrderStatus(String orderId, Date paymentTime, Integer status) {
+		//查询订单信息
+		TbOrder order = tbOrderMapper.selectByPrimaryKey(orderId);
+		if(order == null){
+			return TaotaoResult.build(400, "此订单不存在");
+		}
+		order.setPaymentTime(paymentTime);
+		order.setStatus(status);
+		tbOrderMapper.updateByPrimaryKey(order);
+		//修改订单信息
+		return TaotaoResult.ok();
+	}
+
 }

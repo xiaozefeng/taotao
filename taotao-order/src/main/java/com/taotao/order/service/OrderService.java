@@ -1,5 +1,6 @@
 package com.taotao.order.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.taotao.common.pojo.TaotaoResult;
@@ -22,5 +23,13 @@ public interface OrderService {
 	 * @return
 	 */
 	TaotaoResult getOrderByOrderId(String orderId);
+	/**
+	 * 修改订单状态
+	 * @param orderId
+	 * @param paymentTime
+	 * @param status
+	 * @return
+	 */
+	TaotaoResult changeOrderStatus(String orderId, Date paymentTime, Integer status);
 	
 }

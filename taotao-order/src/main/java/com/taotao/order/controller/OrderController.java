@@ -1,5 +1,9 @@
 package com.taotao.order.controller;
 
+import java.util.Date;
+
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +37,11 @@ public class OrderController {
 			return TaotaoResult.build(500, ExceptionUtil.getStackTrace(e));
 		}
 	}
-	
+	/**
+	 * 查询订单信息
+	 * @param orderId
+	 * @return
+	 */
 	@RequestMapping(value="/info/{orderId}",method=RequestMethod.GET)
 	@ResponseBody
 	public TaotaoResult getOrderById(@PathVariable String orderId){
@@ -44,6 +52,31 @@ public class OrderController {
 			return TaotaoResult.build(500, ExceptionUtil.getStackTrace(e));
 		}
 	}
+	
+	@RequestMapping(value="/changeStatus",method=RequestMethod.POST)
+	@ResponseBody
+	public TaotaoResult changeOrderStatus(String orderId,Long paymentTime,Integer status){
+		if(StringUtils.isBlank(orderId)){
+			return TaotaoResult.build(400, "订单号不能为空");
+		}
+		
+		if(paymentTime == null){
+			return TaotaoResult.build(400, "支付时间不能为空");
+		}
+		
+		if(status == null){
+			return TaotaoResult.build(400, "订单号状态不能为空");
+		}
+		//转换时间
+		Date paymentDateTime = new DateTime(paymentTime).toDate();
+		try {
+			return orderService.changeOrderStatus(orderId,paymentDateTime,status);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return TaotaoResult.build(500, ExceptionUtil.getStackTrace(e));
+		}
+	}
+	
 	
 	
 }

@@ -66,6 +66,8 @@ public class FtpUtil {
 			ftp.setFileType(FTP.BINARY_FILE_TYPE);
 			//上传文件
 			if (!ftp.storeFile(filename, input)) {
+				reply = ftp.getReplyCode();
+				String resultStr = ftp.getReplyString();
 				return result;
 			}
 			input.close();

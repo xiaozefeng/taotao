@@ -38,7 +38,7 @@ public class TestFtp {
 	@Test
 	public void testFtpUtil() throws Exception{
 		InputStream inputStream = new FileInputStream(new File("/Users/xiaozefeng/zfxiao/picture/hello.jpg"));
-		boolean uploadFile = FtpUtil.uploadFile("192.168.143.129", 21, "ftpuser", "ftpuser", "/datas/www/images", "/2016/07/16", "hello1.jpg",inputStream);
+		boolean uploadFile = FtpUtil.uploadFile("192.168.143.129", 21, "ftpuser", "ftpuser", "/datas/www/images", "/2016/07/20", "hello1.jpg",inputStream);
 		System.out.println(uploadFile);
 		
 	}
